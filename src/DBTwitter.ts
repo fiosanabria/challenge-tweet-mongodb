@@ -1,5 +1,5 @@
 import { TweetCollection } from "../models/Tweet";
-import { Tweet } from "../database/tweets";
+import { Tweet, tweets } from "../database/tweets";
 
 class DBTwitter {
   async getTweets(): Promise<Tweet[]> {
@@ -19,7 +19,8 @@ class DBTwitter {
   }
 
   async getTweetById(params: { id: number }): Promise<Tweet | null> {
-    throw new Error("Method not implemented.");
+    const tweet = await TweetCollection.findById(params.id);
+    return tweet;
   }
   async getNumberOfFemaleUsers(): Promise<number> {
     throw new Error("Method not implemented.");
@@ -30,11 +31,11 @@ class DBTwitter {
   }
 
   async deleteTweet(params: { id: number }): Promise<void> {
-    throw new Error("Method not implemented.");
+    await TweetCollection.deleteOne({ _id:params.id });
   }
 
   async addTweet(tweet: Tweet): Promise<void> {
-    throw new Error("Method not implemented.");
+    await TweetCollection.create(tweet);
   }
 
   async updateTweet(params: {
@@ -44,8 +45,9 @@ class DBTwitter {
     tweet?: string;
     spam_level?: number;
   }) {
-    throw new Error("Method not implemented.");
+    await TweetCollection.updateOne(params);
   }
 }
+
 
 export default DBTwitter;
